@@ -14,6 +14,11 @@ namespace SeedMachines.Framework
     class DataLoader : IAssetEditor
     {
         public static IAssetData craftingRecipesAsset;
+        public static IAssetData bigCraftableInformationsAsset;
+
+        private bool craftablesTilesheetWasPatched = false;
+        private bool dataAssetsWasPatched = false;
+
         public static Texture2D SeedMachinesSprite;
 
         public static Dictionary<string, object> AssetsToLoad = new Dictionary<string, object>();
@@ -32,47 +37,65 @@ namespace SeedMachines.Framework
         {
             if (asset.AssetNameEquals("TileSheets\\Craftables"))
             {
-                //Modifying default Craftables tilesheet of the game
-
-                Texture2D CraftablesSheet = asset.AsImage().Data;
-                int originalWidth = CraftablesSheet.Width;
-                int originalHeight = CraftablesSheet.Height;
-
-                IBigCraftableWrapper.initialAbsoluteID = (originalWidth / 16) * (originalHeight / 32); //First free id for the mod injecting
-
-                //Getting original color array
-                Color[] originalData = new Color[originalWidth * originalHeight];
-                CraftablesSheet.GetData<Color>(originalData);
-
-                //Getting mod's color array
-                int customWidth = SeedMachinesSprite.Width;
-                int customHeight = SeedMachinesSprite.Height;
-                Color[] customData = new Color[customWidth * customHeight];
-                SeedMachinesSprite.GetData<Color>(customData);
-
-                //Preparing new clear tilesheet
-                Texture2D newTileSheet = new Texture2D(Game1.game1.GraphicsDevice, originalWidth, originalHeight + customHeight, false, SurfaceFormat.Color);
-
-                //Join default and custom color arrays
-                var mixedData = new Color[originalData.Length + customData.Length];
-                originalData.CopyTo(mixedData, 0);
-                customData.CopyTo(mixedData, originalData.Length);
-
-                //Push joined array of colors to prepared new tilesheet
-                newTileSheet.SetData(0, new Rectangle(0, 0, originalWidth, originalHeight + customHeight), mixedData, 0, mixedData.Length);
-
-                //Replace default tilesheet with joined one
-                asset.ReplaceWith(newTileSheet);
+                patchCraftablesTilesheetAsset(asset);
+                checkAndPachDataAssets();
             }
             else if (asset.AssetNameEquals("Data\\BigCraftablesInformation"))
             {
-                IBigCraftableWrapper.addBigCraftablesInformations(asset.AsDictionary<int, string>().Data);
-                IBigCraftableWrapper.addCraftingRecipes(craftingRecipesAsset.AsDictionary<string, string>().Data);
+                bigCraftableInformationsAsset = asset;
+                checkAndPachDataAssets();
             }
             else if (asset.AssetNameEquals("Data\\CraftingRecipes"))
             {
                 craftingRecipesAsset = asset;
+                checkAndPachDataAssets();
             }
+        }
+
+        public void checkAndPachDataAssets()
+        {
+            if (this.craftablesTilesheetWasPatched && !this.dataAssetsWasPatched && bigCraftableInformationsAsset != null && craftingRecipesAsset != null)
+            {
+                IBigCraftableWrapper.addBigCraftablesInformations(bigCraftableInformationsAsset.AsDictionary<int, string>().Data);
+                IBigCraftableWrapper.addCraftingRecipes(craftingRecipesAsset.AsDictionary<string, string>().Data);
+                this.dataAssetsWasPatched = true;
+            }
+        }
+
+        public void patchCraftablesTilesheetAsset(IAssetData craftableTilesheetAsset)
+        {
+            //Modifying default Craftables tilesheet of the game
+            Texture2D CraftablesSheet = craftableTilesheetAsset.AsImage().Data;
+            int originalWidth = CraftablesSheet.Width;
+            int originalHeight = CraftablesSheet.Height;
+
+            IBigCraftableWrapper.initialAbsoluteID = (originalWidth / 16) * (originalHeight / 32); //First free id for the mod injecting
+
+            //Getting original color array
+            Color[] originalData = new Color[originalWidth * originalHeight];
+            CraftablesSheet.GetData<Color>(originalData);
+
+            //Getting mod's color array
+            int customWidth = SeedMachinesSprite.Width;
+            int customHeight = SeedMachinesSprite.Height;
+            Color[] customData = new Color[customWidth * customHeight];
+            SeedMachinesSprite.GetData<Color>(customData);
+
+            //Preparing new clear tilesheet
+            Texture2D newTileSheet = new Texture2D(Game1.game1.GraphicsDevice, originalWidth, originalHeight + customHeight, false, SurfaceFormat.Color);
+
+            //Join default and custom color arrays
+            var mixedData = new Color[originalData.Length + customData.Length];
+            originalData.CopyTo(mixedData, 0);
+            customData.CopyTo(mixedData, originalData.Length);
+
+            //Push joined array of colors to prepared new tilesheet
+            newTileSheet.SetData(0, new Rectangle(0, 0, originalWidth, originalHeight + customHeight), mixedData, 0, mixedData.Length);
+
+            //Replace default tilesheet with joined one
+            craftableTilesheetAsset.ReplaceWith(newTileSheet);
+
+            this.craftablesTilesheetWasPatched = true;
         }
     }
 }
