@@ -1,4 +1,5 @@
 
+
 # Seeds Machines
 
 _to my beloved wife._ :two_hearts:
@@ -17,6 +18,10 @@ machines, that give you ability to get some seeds.
 * [Install](#install)
 * [Use](#use)
 * [Configure](#configure)
+* [Beta Test](#beta-test)
+* [Translations](#translations)
+* [Assets](#assets)
+* [TODO](#todo)
 * [Release Notes](#release-notes)
 
 ## Install
@@ -42,6 +47,24 @@ After first running of the game in the `%Stardew Valley Folder%/Mods/SeedMachine
 | seedBanditIngredients | String | 787 2 337 5 335 20 | Ingredients for crafting the Seed Bandit |
 | seedBanditOneGamePrice | int | 100 | Price for 1 game in Seed Bandit |
 | themeName | String | Default | Theme name (you can add your own asset e.g. `assets/SeedMachinesMyTheme.png`. Then this parameter should be "MyTheme". |
+
+## Beta Test
+You can help this project with your own game experience with this mod! Just check how it works, try some tricky methods (if you know them) and try to broke it! If you get some crashes or not normal behaviour - please, let me know about it! Create issue on Nexusmods or Github! Thanks in advance!
+
+## Translations
+My native language is russian. As you can see, my english is so-so. If you want to help me with some translation fixes or add your language in the mod - feel free to ping me in Discord(!MrVeress#7408) or in Github(https://github.com/mrveress). Always glad to meet someone new in my life!)
+
+## Assets
+My pixelart is great (no) as you see. If you want to add your theme in assets not only for yourself - ping me in Discord or in Github. If your work will be greather than mine (any other will be better hehe) - I will make your work as default theme for future releases. But make sure that you understand, that in future releases I'll add new machines and ping you for adding new images into your asset (or I will do this by my hands, and you will be not happy with this lol).
+
+## TODO
+My big plans:
+- New types of machines (Seeds extractor from the trash or other crazy ideas. Btw, you can help me with ideas :smile:)
+- Per-save configs (Separated settings for each save file)
+- Multiplayer sync of the settings (settings can set/change only host of the server)
+- UI for changing parameters of the mod (with hotkeys)
+- UI for "Seed Bandit" game
+- Refactoring, checking compatibility with other mods
 
 ## Release Notes
 
