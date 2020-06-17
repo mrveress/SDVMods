@@ -68,4 +68,5 @@ My big plans:
 
 ## Release Notes
 
- - **0.0.1-beta** - **current version** - Added base functionality for Seed Machine and Seed Bandit.
+ - **0.0.2-beta** - **current version** - Fixed issue with loading of the assets on Android devices. Added compatilibty-fix for JsonAssets mod from spacechase0 (if it installed)
+ - **0.0.1-beta** - Added base functionality for Seed Machine and Seed Bandit.
