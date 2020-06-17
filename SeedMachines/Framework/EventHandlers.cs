@@ -18,9 +18,11 @@ namespace SeedMachines.Framework
         public static void OnGameLaunched(object sender, GameLaunchedEventArgs args)
         {
             ModEntry.dataLoader = new DataLoader();
-            ModEntry.modHelper.Content.AssetEditors.Add(ModEntry.dataLoader);
+            if (DataLoader.isJsonAssetsLoaded != true)
+            {
+                ModEntry.modHelper.Content.AssetEditors.Add(ModEntry.dataLoader);
+            }
         }
-
         public static void OnDayStarted(object sender, DayStartedEventArgs args)
         {
             IBigCraftableWrapper.addAllRecipies();

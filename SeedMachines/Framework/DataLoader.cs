@@ -5,6 +5,7 @@ using StardewModdingAPI;
 using StardewValley;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,10 @@ namespace SeedMachines.Framework
 {
     class DataLoader : IAssetEditor
     {
+        public static IJsonAssetsAPI jsonAssetsAPI;
+        public static bool isJsonAssetsLoaded;
+        public static bool isSpaceCoreLoaded;
+
         public static IAssetData craftingRecipesAsset;
         public static IAssetData bigCraftableInformationsAsset;
 
@@ -25,16 +30,35 @@ namespace SeedMachines.Framework
 
         public DataLoader()
         {
-            SeedMachinesSprite = ModEntry.modHelper.Content.Load<Texture2D>("assets/SeedMachines" + ModEntry.settings.themeName + ".png");
+            isJsonAssetsLoaded = ModEntry.modHelper.ModRegistry.IsLoaded("spacechase0.JsonAssets");
+            isSpaceCoreLoaded = ModEntry.modHelper.ModRegistry.IsLoaded("spacechase0.SpaceCore");
+            if (isJsonAssetsLoaded == true)
+            {
+                prepareJsonAssetsJSONs(ModEntry.settings.themeName);
+                jsonAssetsAPI = ModEntry.modHelper.ModRegistry.GetApi<IJsonAssetsAPI>("spacechase0.JsonAssets");
+                jsonAssetsAPI.LoadAssets(Path.Combine(ModEntry.modHelper.DirectoryPath, "assets", "SeedMachines" + ModEntry.settings.themeName + "JA"));
+                prepareCorrectIDs();
+            } else
+            {
+                SeedMachinesSprite = ModEntry.modHelper.Content.Load<Texture2D>("assets/SeedMachines" + ModEntry.settings.themeName + ".png");
+            }
         }
 
         public bool CanEdit<T>(IAssetInfo asset)
         {
-            return (asset.AssetNameEquals("TileSheets\\Craftables") || asset.AssetNameEquals("Data\\BigCraftablesInformation") || asset.AssetNameEquals("Data\\CraftingRecipes"));
+            return 
+                (
+                    asset.AssetNameEquals("TileSheets\\Craftables") 
+                    || asset.AssetNameEquals("Data\\BigCraftablesInformation") 
+                    || asset.AssetNameEquals("Data\\CraftingRecipes")
+                ) 
+                && isJsonAssetsLoaded != true;
         }
 
         public void Edit<T>(IAssetData asset)
         {
+            if (isJsonAssetsLoaded == true) return;
+
             if (asset.AssetNameEquals("TileSheets\\Craftables"))
             {
                 patchCraftablesTilesheetAsset(asset);
@@ -69,7 +93,9 @@ namespace SeedMachines.Framework
             int originalWidth = CraftablesSheet.Width;
             int originalHeight = CraftablesSheet.Height;
 
-            IBigCraftableWrapper.initialAbsoluteID = (originalWidth / 16) * (originalHeight / 32); //First free id for the mod injecting
+            int startingId = (originalWidth / 16) * (originalHeight / 32);
+            IBigCraftableWrapper.getWrapper("Seed Machine").itemID = startingId; //First free id for the mod injecting
+            IBigCraftableWrapper.getWrapper("Seed Bandit").itemID = startingId + 6;
 
             //Getting original color array
             Color[] originalData = new Color[originalWidth * originalHeight];
@@ -96,6 +122,27 @@ namespace SeedMachines.Framework
             craftableTilesheetAsset.ReplaceWith(newTileSheet);
 
             this.craftablesTilesheetWasPatched = true;
+        }
+
+        public void prepareJsonAssetsJSONs(String themeName)
+        {
+            foreach(String wrapperName in IBigCraftableWrapper.getAllWrappers().Keys)
+            {
+                ModEntry.modHelper.Data.WriteJsonFile(
+                    "assets/SeedMachines" + themeName + "JA/BigCraftables/" + wrapperName + "/big-craftable.json",
+                    IBigCraftableWrapper.getWrapper(wrapperName).getJsonAssetsModel()
+                );
+            }
+        }
+
+        public void prepareCorrectIDs()
+        {
+            foreach (String wrapperName in IBigCraftableWrapper.getAllWrappers().Keys)
+            {
+                int bigCraftableId = jsonAssetsAPI.GetBigCraftableId(wrapperName);
+                IBigCraftableWrapper.getWrapper(wrapperName).itemID = bigCraftableId;
+            }
+            
         }
     }
 }
