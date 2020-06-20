@@ -75,6 +75,7 @@
     <Compile Include="Framework\DataLoader.cs" />
     <Compile Include="Framework\EventHandlers.cs" />
     <Compile Include="Framework\IJsonAssetsAPI.cs" />
+    <Compile Include="Framework\Minigames\SeedBanditSlots.cs" />
     <Compile Include="Framework\ModSettings.cs" />
     <Compile Include="Framework\SalableSeedsEnumerator.cs" />
     <Compile Include="Framework\BigCraftables\SeedMachine.cs" />
