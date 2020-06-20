@@ -19,10 +19,12 @@ namespace SeedMachines.Framework
             foreach (String filePath in fileEntries)
             {
                 String fileName = Path.GetFileName(filePath);
-                String localeName = fileName.Replace(".json", "");
-                ModEntry.debug("i18n/" + fileName);
-                IDictionary<String, String> localeValues = ModEntry.modHelper.Data.ReadJsonFile<IDictionary<String, String>>("i18n/" + fileName);
-                translations.Add(localeName, localeValues);
+                if (fileName.Contains(".json") && !fileName.Contains("backup"))
+                {
+                    String localeName = fileName.Replace(".json", "");
+                    IDictionary<String, String> localeValues = ModEntry.modHelper.Data.ReadJsonFile<IDictionary<String, String>>("i18n/" + fileName);
+                    translations.Add(localeName, localeValues);
+                }
             }
         }
 
