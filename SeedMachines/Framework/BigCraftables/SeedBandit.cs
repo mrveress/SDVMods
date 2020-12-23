@@ -27,7 +27,7 @@ namespace SeedMachines.Framework.BigCraftables
         {
             ModEntry.modHelper.Input.Suppress(args.Button);
 
-            /*if (Game1.player.Money >= ModEntry.settings.seedBanditOneGamePrice)
+            if (Game1.player.Money >= ModEntry.settings.seedBanditOneGamePrice)
             {
                 Game1.player.Money -= ModEntry.settings.seedBanditOneGamePrice;
 
@@ -45,8 +45,8 @@ namespace SeedMachines.Framework.BigCraftables
             else
             {
                 Game1.addHUDMessage(new HUDMessage(ModEntry.modHelper.Translation.Get("seed-bandit.not-enough-money"), 3));
-            }*/
-            Game1.currentMinigame = new SeedBanditSlots();
+            }
+            //Game1.currentMinigame = new SeedBanditSlots();
         }
     }
 }
