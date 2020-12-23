@@ -5,6 +5,6 @@
     "Description": "Add Seed Machines for your craftable items.",
     "UniqueID": "Veress.SeedMachines",
     "EntryDll": "SeedMachines.dll",
-    "MinimumApiVersion": "3.0.0",
+    "MinimumApiVersion": "3.8.0",
     "UpdateKeys": [ "Nexus:6265" ]
 }
