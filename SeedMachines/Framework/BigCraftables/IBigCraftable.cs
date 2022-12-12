@@ -17,7 +17,11 @@ namespace SeedMachines.Framework.BigCraftables
         public int currentAnimationIndex = 0;
         public double timestampPreviousAnimation = -1;
         public StardewValley.Object baseObject;
-        public IBigCraftableWrapper wrapper;
+        public String wrapperName;
+        public IBigCraftableWrapper wrapper
+        {
+            get { return IBigCraftableWrapper.getWrapper(this.wrapperName); }
+        }
 
         public IBigCraftable() : base()
         {
@@ -31,7 +35,7 @@ namespace SeedMachines.Framework.BigCraftables
             )
         {
             this.baseObject = baseObject;
-            this.wrapper = wrapper;
+            this.wrapperName = wrapper.name;
 
             this.animate();
         }
