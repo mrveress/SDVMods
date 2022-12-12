@@ -51,7 +51,6 @@ namespace SeedMachines.Framework
             if (
                 Context.IsPlayerFree
                 && (args.Button.IsActionButton() || Constants.TargetPlatform == GamePlatform.Android)
-                && args.Cursor.Tile != null
                 && Game1.currentLocation.objects.ContainsKey(args.Cursor.Tile)
                 && Game1.currentLocation.objects[args.Cursor.Tile] is IBigCraftable
                 && args.Cursor.Tile.Equals(args.Cursor.GrabTile)

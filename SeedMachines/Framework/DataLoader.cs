@@ -12,20 +12,12 @@ using System.Threading.Tasks;
 
 namespace SeedMachines.Framework
 {
-    class DataLoader : IAssetEditor
+    class DataLoader
     {
         public static IJsonAssetsAPI jsonAssetsAPI;
         public static ISpaceCoreAPI spaceCoreAPI;
         public static bool isJsonAssetsLoaded;
         public static bool isSpaceCoreLoaded;
-
-        public static IAssetData craftingRecipesAsset;
-        public static IAssetData bigCraftableInformationsAsset;
-
-        private bool craftablesTilesheetWasPatched = false;
-        private bool dataAssetsWasPatched = false;
-
-        public static Dictionary<string, object> AssetsToLoad = new Dictionary<string, object>();
 
         public DataLoader()
         {
@@ -52,17 +44,6 @@ namespace SeedMachines.Framework
                 prepareCorrectIDs();
             }
         }
-
-        public bool CanEdit<T>(IAssetInfo asset)
-        {
-            return false;
-        }
-
-        public void Edit<T>(IAssetData asset)
-        {
-            if (isJsonAssetsLoaded == true) return;
-        }
-
 
         public void prepareJsonAssetsJSONs(String themeName)
         {
