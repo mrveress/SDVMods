@@ -61,22 +61,6 @@ namespace SeedMachines.Framework.BigCraftables
             }
         }
 
-        public static void addBigCraftablesInformations(IDictionary<string, string> bigCraftablesInformationData)
-        {
-            foreach (IBigCraftableWrapper wrapper in wrappers.Values)
-            {
-                wrapper.addBigCraftablesInformation(bigCraftablesInformationData);
-            }
-        }
-
-        public static void addCraftingRecipes(IDictionary<string, string> craftingRecipesData)
-        {
-            foreach (IBigCraftableWrapper wrapper in wrappers.Values)
-            {
-                wrapper.addCraftingRecipe(craftingRecipesData);
-            }
-        }
-
         //-----------------
 
         public string itemID;
@@ -122,16 +106,6 @@ namespace SeedMachines.Framework.BigCraftables
             return CustomTranslator.getAllTranslationsByLocales(getTranslationBaseName() + ".description");
         }
 
-        public String getLabel()
-        {
-            return ModEntry.modHelper.Translation.Get(getTranslationBaseName() + ".label");
-        }
-
-        public String getDescription()
-        {
-            return ModEntry.modHelper.Translation.Get(getTranslationBaseName() + ".description");
-        }
-
         public void addReceipt()
         {
             if (!Game1.player.craftingRecipes.Keys.Contains(this.name))
@@ -140,20 +114,10 @@ namespace SeedMachines.Framework.BigCraftables
             }
         }
 
-        public void addBigCraftablesInformation(IDictionary<string, string> bigCraftablesInformationData)
-        {
-            bigCraftablesInformationData[itemID] = $"{name}/{price}/{edibility}/{typeAndCategory}/{getDescription()}/{availableOutdoors}/{availableIndoors}/{fragility}/{getLabel()}";
-        }
-
-        public void addCraftingRecipe(IDictionary<string, string> craftingRecipesData)
-        {
-            craftingRecipesData[this.name] = $"{ingredients}/{location}/{itemID}/true/{unlockConditions}/{getLabel()}";
-        }
-
         public JsonAssetsBigCraftableModel getJsonAssetsModel()
         {
             JsonAssetsBigCraftableModel result = new JsonAssetsBigCraftableModel();
-            result.Name = this.name;
+            result.Name = this.getDefaultLabel();
             result.Description = this.getDefaultDescription();
             result.Price = this.price;
             result.IsDefault = true;
@@ -172,9 +136,7 @@ namespace SeedMachines.Framework.BigCraftables
                 ingredient.Count = Int32.Parse(splittedIngredients[i+1]);
                 result.Recipe.Ingredients.Add(ingredient);
             }
-
-            result.NameLocalization = getAllTranslationsForLabel();
-            result.DescriptionLocalization = getAllTranslationsForDescription();
+            result.TranslationKey = $"item.{getTranslationBaseName()}";
 
             return result;
         }

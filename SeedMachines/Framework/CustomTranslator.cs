@@ -33,6 +33,16 @@ namespace SeedMachines.Framework
             return translations[locale][parameter];
         }
 
+        public static IList<string> getAllLocales()
+        {
+            return translations.Keys.ToList();
+        }
+
+        public static IList<string> getAllParameters(String locale)
+        {
+            return translations[locale].Keys.ToList();
+        }
+
         public static IDictionary<String, String> getAllTranslationsByLocales(String parameter)
         {
             IDictionary<String, String> result = new Dictionary<String, String>();
