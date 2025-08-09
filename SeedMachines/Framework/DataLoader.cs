@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SeedMachines.Framework.BigCraftables;
 using StardewModdingAPI;
@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using StardewModdingAPI.Framework.ModHelpers;
 
 namespace SeedMachines.Framework
 {
@@ -44,8 +45,9 @@ namespace SeedMachines.Framework
                     jsonAssetsAPI = ModEntry.modHelper.ModRegistry.GetApi<IJsonAssetsAPI>("spacechase0.JsonAssets");
                     if (jsonAssetsAPI != null)
                     {
-                        jsonAssetsAPI.LoadAssets(Path.Combine(ModEntry.modHelper.DirectoryPath, "assets",
-                            "SeedMachines" + ModEntry.settings.themeName + "JA"));
+                        jsonAssetsAPI.LoadAssets(
+                            Path.Combine(ModEntry.modHelper.DirectoryPath, "assets", "SeedMachines" + ModEntry.settings.themeName + "JA")
+                        );
                         prepareCorrectIDs();
                     }
                     else
@@ -73,15 +75,15 @@ namespace SeedMachines.Framework
         {
             foreach (string locale in CustomTranslator.getAllLocales())
             {
+                if (locale == "default") continue;
                 IDictionary<string, string> translationMap = new Dictionary<string, string>();
                 foreach (string parameter in CustomTranslator.getAllParameters(locale))
                 {
-                    if (parameter.EndsWith(".label"))
+                    string parameterName = parameter.EndsWith(".label") ? parameter.Replace(".label", ".name") : parameter;
+                    if (parameterName.EndsWith(".name") || parameterName.EndsWith(".description"))
                     {
-                        translationMap.Add(parameter.Replace(".label", ".name"), CustomTranslator.getTranslation(locale, parameter));
-                    } else if (parameter.EndsWith(".description"))
-                    {
-                        translationMap.Add(parameter, CustomTranslator.getTranslation(locale, parameter));
+                        translationMap.Add(parameterName, CustomTranslator.getTranslation(locale, parameter));
+                        translationMap.Add("big-craftable." + parameterName, CustomTranslator.getTranslation(locale, parameter));
                     }
                 }
                 ModEntry.modHelper.Data.WriteJsonFile(
