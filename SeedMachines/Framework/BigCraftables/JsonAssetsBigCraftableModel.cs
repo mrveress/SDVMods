@@ -15,6 +15,8 @@ namespace SeedMachines.Framework.BigCraftables
         public bool ProvidesLight { get; set; }
         public int ReserveExtraIndexCount { get; set; }
         public JsonAssetsBigCraftableRecipe Recipe { get; set; }
+        public IDictionary<string, string> NameLocalization { get; set; }
+        public IDictionary<string, string> DescriptionLocalization { get; set; }
         public string TranslationKey { get; set; }
     }
 

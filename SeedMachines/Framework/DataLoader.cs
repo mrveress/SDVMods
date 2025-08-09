@@ -78,10 +78,10 @@ namespace SeedMachines.Framework
                 {
                     if (parameter.EndsWith(".label"))
                     {
-                        translationMap.Add("item." + parameter.Replace(".label", ".name"), CustomTranslator.getTranslation(locale, parameter));
+                        translationMap.Add(parameter.Replace(".label", ".name"), CustomTranslator.getTranslation(locale, parameter));
                     } else if (parameter.EndsWith(".description"))
                     {
-                        translationMap.Add("item." + parameter, CustomTranslator.getTranslation(locale, parameter));
+                        translationMap.Add(parameter, CustomTranslator.getTranslation(locale, parameter));
                     }
                 }
                 ModEntry.modHelper.Data.WriteJsonFile(
