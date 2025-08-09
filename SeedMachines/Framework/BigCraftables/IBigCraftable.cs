@@ -31,7 +31,7 @@ namespace SeedMachines.Framework.BigCraftables
         public IBigCraftable(StardewValley.Object baseObject, IBigCraftableWrapper wrapper)
             : base(
                     baseObject.TileLocation,
-                    baseObject.ParentSheetIndex
+                    baseObject.ItemId
             )
         {
             this.baseObject = baseObject;

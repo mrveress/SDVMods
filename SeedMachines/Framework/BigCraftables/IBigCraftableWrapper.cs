@@ -13,7 +13,7 @@ namespace SeedMachines.Framework.BigCraftables
 {
     public abstract class IBigCraftableWrapper
     {
-        private static Dictionary<String, IBigCraftableWrapper> wrappers = new Dictionary<String, IBigCraftableWrapper>();
+        private static Dictionary<string, IBigCraftableWrapper> wrappers = new Dictionary<string, IBigCraftableWrapper>();
 
         static IBigCraftableWrapper()
         {
@@ -21,17 +21,17 @@ namespace SeedMachines.Framework.BigCraftables
             addWrapper(new SeedBanditWrapper());
         }
 
-        public static void addWrapper(IBigCraftableWrapper wrapper)
+        private static void addWrapper(IBigCraftableWrapper wrapper)
         {
             wrappers.Add(wrapper.name, wrapper);
         }
 
-        public static IBigCraftableWrapper getWrapper(String name)
+        public static IBigCraftableWrapper getWrapper(string name)
         {
             return wrappers[name];
         }
 
-        public static Dictionary<String, IBigCraftableWrapper> getAllWrappers()
+        public static Dictionary<string, IBigCraftableWrapper> getAllWrappers()
         {
             return wrappers;
         }
@@ -61,7 +61,7 @@ namespace SeedMachines.Framework.BigCraftables
             }
         }
 
-        public static void addBigCraftablesInformations(IDictionary<int, string> bigCraftablesInformationData)
+        public static void addBigCraftablesInformations(IDictionary<string, string> bigCraftablesInformationData)
         {
             foreach (IBigCraftableWrapper wrapper in wrappers.Values)
             {
@@ -79,7 +79,7 @@ namespace SeedMachines.Framework.BigCraftables
 
         //-----------------
 
-        public int itemID;
+        public string itemID;
         public String name;
         public int price;
         public bool availableOutdoors;
@@ -140,7 +140,7 @@ namespace SeedMachines.Framework.BigCraftables
             }
         }
 
-        public void addBigCraftablesInformation(IDictionary<int, string> bigCraftablesInformationData)
+        public void addBigCraftablesInformation(IDictionary<string, string> bigCraftablesInformationData)
         {
             bigCraftablesInformationData[itemID] = $"{name}/{price}/{edibility}/{typeAndCategory}/{getDescription()}/{availableOutdoors}/{availableIndoors}/{fragility}/{getLabel()}";
         }
@@ -160,17 +160,17 @@ namespace SeedMachines.Framework.BigCraftables
             result.ProvidesLight = false;
             result.ReserveExtraIndexCount = this.maxAnimationIndex;
 
-            result.Recipe = new JARecipe();
+            result.Recipe = new JsonAssetsBigCraftableRecipe();
             result.Recipe.CanPurchase = false;
             result.Recipe.ResultCount = 1;
-            result.Recipe.Ingredients = new List<IDictionary<String, int>>();
+            result.Recipe.Ingredients = new List<JsonAssetsBigCraftableIngredient>();
             string[] splittedIngredients = this.ingredients.Split(' ');
             for (int i = 0; i < splittedIngredients.Length; i+=2)
             {
-                IDictionary<String, int> ingredientMap = new Dictionary<string, int>();
-                ingredientMap.Add("Object", Int32.Parse(splittedIngredients[i]));
-                ingredientMap.Add("Count", Int32.Parse(splittedIngredients[i+1]));
-                result.Recipe.Ingredients.Add(ingredientMap);
+                JsonAssetsBigCraftableIngredient ingredient = new JsonAssetsBigCraftableIngredient();
+                ingredient.Object = splittedIngredients[i];
+                ingredient.Count = Int32.Parse(splittedIngredients[i+1]);
+                result.Recipe.Ingredients.Add(ingredient);
             }
 
             result.NameLocalization = getAllTranslationsForLabel();

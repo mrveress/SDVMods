@@ -20,7 +20,7 @@ namespace SeedMachines
     {
         internal static IModHelper modHelper;
         internal static IMonitor monitor;
-        internal static DataLoader dataLoader;
+        internal static Framework.DataLoader dataLoader;
         internal static ModSettings settings;
 
         public override void Entry(IModHelper helper)
