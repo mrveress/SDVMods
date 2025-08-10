@@ -73,7 +73,7 @@ namespace SeedMachines.Framework
 
         public void prepareJsonAssetsJSONs(String themeName)
         {
-            foreach (string locale in CustomTranslator.getAllLocales())
+            /*foreach (string locale in CustomTranslator.getAllLocales())
             {
                 if (locale == "default") continue;
                 IDictionary<string, string> translationMap = new Dictionary<string, string>();
@@ -90,7 +90,7 @@ namespace SeedMachines.Framework
                     "assets/SeedMachines" + themeName + "JA/i18n/" + locale + ".json",
                     translationMap
                 );
-            }
+            }*/
             foreach(String wrapperName in IBigCraftableWrapper.getAllWrappers().Keys)
             {
                 ModEntry.modHelper.Data.WriteJsonFile(

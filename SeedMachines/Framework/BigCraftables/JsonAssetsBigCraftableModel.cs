@@ -17,7 +17,7 @@ namespace SeedMachines.Framework.BigCraftables
         public JsonAssetsBigCraftableRecipe Recipe { get; set; }
         public IDictionary<string, string> NameLocalization { get; set; }
         public IDictionary<string, string> DescriptionLocalization { get; set; }
-        public string TranslationKey { get; set; }
+        //public string TranslationKey { get; set; }
     }
 
     public class JsonAssetsBigCraftableRecipe

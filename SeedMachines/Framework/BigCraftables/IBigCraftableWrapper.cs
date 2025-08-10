@@ -136,7 +136,7 @@ namespace SeedMachines.Framework.BigCraftables
                 ingredient.Count = Int32.Parse(splittedIngredients[i+1]);
                 result.Recipe.Ingredients.Add(ingredient);
             }
-            result.TranslationKey = getTranslationBaseName();
+            //result.TranslationKey = getTranslationBaseName();
             result.NameLocalization = getAllTranslationsForLabel();
             result.DescriptionLocalization = getAllTranslationsForDescription();
 
