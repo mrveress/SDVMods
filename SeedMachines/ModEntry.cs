@@ -39,6 +39,7 @@ namespace SeedMachines
             modHelper.Events.Player.Warped += EventHandlers.OnWarped;
             modHelper.Events.World.ObjectListChanged += EventHandlers.OnObjectListChanged;
             modHelper.Events.Input.ButtonPressed += EventHandlers.OnButtonPressed;
+            modHelper.Events.Content.LocaleChanged += EventHandlers.OnLocaleChanged;
         }
 
         public static void readSettings()

@@ -43,6 +43,17 @@ namespace SeedMachines.Framework
             BigCraftablesDynamicInjector.injectDynamicsInCurrentLocation();
         }
 
+        public static void OnLocaleChanged(object sender, LocaleChangedEventArgs args)
+        {
+            ModEntry.debug($"Locale changed to {args.NewLocale}, forcing JA-related reload…");
+            ModEntry.modHelper.GameContent.InvalidateCache(
+                asset =>
+                    asset.NameWithoutLocale.IsEquivalentTo("Data/BigCraftables")
+                    || asset.NameWithoutLocale.IsEquivalentTo("Strings/BigCraftables")
+                    || asset.Name.StartsWith("JA/BigCraftable/")
+            );
+        }
+
         public static void OnButtonPressed(object sender, ButtonPressedEventArgs args)
         {
             if (!Context.IsWorldReady)
