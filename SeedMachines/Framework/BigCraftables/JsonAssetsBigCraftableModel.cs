@@ -24,6 +24,7 @@ namespace SeedMachines.Framework.BigCraftables
     {
         public int ResultCount { get; set; }
         public IList<JsonAssetsBigCraftableIngredient> Ingredients { get; set; }
+        public bool IsDefault { get; set; }
         public bool CanPurchase { get; set; }
     }
 

@@ -21,7 +21,6 @@ namespace SeedMachines.Framework
         }
         public static void OnDayStarted(object sender, DayStartedEventArgs args)
         {
-            IBigCraftableWrapper.addAllRecipies();
             BigCraftablesDynamicInjector.injectDynamicsInCurrentLocation();
         }
 

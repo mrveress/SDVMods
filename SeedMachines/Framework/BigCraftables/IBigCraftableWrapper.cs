@@ -36,14 +36,6 @@ namespace SeedMachines.Framework.BigCraftables
             return wrappers;
         }
 
-        public static void addAllRecipies()
-        {
-            foreach (IBigCraftableWrapper wrapper in wrappers.Values)
-            {
-                wrapper.addReceipt();
-            }
-        }
-
         public static void checkAndInjectDynamicObject(OverlaidDictionary objects, Vector2 key)
         {
             if (!(objects[key] is IBigCraftable) && wrappers.ContainsKey(objects[key].name))
@@ -85,7 +77,7 @@ namespace SeedMachines.Framework.BigCraftables
 
         private String getTranslationBaseName()
         {
-            return this.name.ToLower().Replace(' ', '-');
+            return name.ToLower().Replace(' ', '-');
         }
 
         public String getDefaultLabel()
@@ -106,29 +98,22 @@ namespace SeedMachines.Framework.BigCraftables
             return CustomTranslator.getAllTranslationsByLocales(getTranslationBaseName() + ".description");
         }
 
-        public void addReceipt()
-        {
-            if (!Game1.player.craftingRecipes.Keys.Contains(this.name))
-            {
-                Game1.player.craftingRecipes.Add(this.name, 0);
-            }
-        }
-
         public JsonAssetsBigCraftableModel getJsonAssetsModel()
         {
             JsonAssetsBigCraftableModel result = new JsonAssetsBigCraftableModel();
-            result.Name = this.getDefaultLabel();
-            result.Description = this.getDefaultDescription();
-            result.Price = this.price;
+            result.Name = getDefaultLabel();
+            result.Description = getDefaultDescription();
+            result.Price = price;
             result.IsDefault = true;
             result.ProvidesLight = false;
-            result.ReserveExtraIndexCount = this.maxAnimationIndex;
+            result.ReserveExtraIndexCount = maxAnimationIndex;
 
             result.Recipe = new JsonAssetsBigCraftableRecipe();
+            result.Recipe.IsDefault = true;
             result.Recipe.CanPurchase = false;
             result.Recipe.ResultCount = 1;
             result.Recipe.Ingredients = new List<JsonAssetsBigCraftableIngredient>();
-            string[] splittedIngredients = this.ingredients.Split(' ');
+            string[] splittedIngredients = ingredients.Split(' ');
             for (int i = 0; i < splittedIngredients.Length; i+=2)
             {
                 JsonAssetsBigCraftableIngredient ingredient = new JsonAssetsBigCraftableIngredient();
@@ -136,6 +121,7 @@ namespace SeedMachines.Framework.BigCraftables
                 ingredient.Count = Int32.Parse(splittedIngredients[i+1]);
                 result.Recipe.Ingredients.Add(ingredient);
             }
+            
             //result.TranslationKey = getTranslationBaseName();
             result.NameLocalization = getAllTranslationsForLabel();
             result.DescriptionLocalization = getAllTranslationsForDescription();
