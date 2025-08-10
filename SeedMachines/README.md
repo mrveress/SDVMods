@@ -67,8 +67,8 @@ My big plans:
 - Refactoring, checking compatibility with other mods
 
 ## Release Notes
-
- - **0.0.5-beta** - **current version** - Fixed issue with saving the game. Now **JsonAssets** and **SpaceCore** from spacechase0 are **REQUIRED**
+ - **0.1.0** - **current version** - Upgraded mod to support **1.6+ Stardew Valley** / **4.x.x SMAPI** / **1.11.X JsonAssets**, fixed issues with localization
+ - **0.0.5-beta** - Fixed issue with saving the game. Now **JsonAssets** and **SpaceCore** from spacechase0 are **REQUIRED**
  - **0.0.4-beta** - Updated minimum SMAPI version to 3.8.0
  - **0.0.3-beta** - Quick changes for parameterless constructors fix (v1)
  - **0.0.2-beta** - Fixed issue with loading of the assets on Android devices. Added compatilibty-fix for JsonAssets mod from spacechase0 (if it installed)

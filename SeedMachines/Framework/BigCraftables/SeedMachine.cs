@@ -29,7 +29,16 @@ namespace SeedMachines.Framework.BigCraftables
         public override void onClick(ButtonPressedEventArgs args)
         {
             ModEntry.modHelper.Input.Suppress(args.Button);
-            Game1.activeClickableMenu = new ShopMenu(SalableSeedsEnumerator.getSeedsForSale(), 0, null, null, null, null);
+            
+            Game1.activeClickableMenu = new ShopMenu(
+                shopId: "SeedMachines.AdHoc",
+                itemPriceAndStock: SalableSeedsEnumerator.GetSeedsForSale(), 
+                currency: 0, 
+                who: null, 
+                on_purchase: null, 
+                on_sell: null, 
+                playOpenSound: true
+            );
         }
     }
 }

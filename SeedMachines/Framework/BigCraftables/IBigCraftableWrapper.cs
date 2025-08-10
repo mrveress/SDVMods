@@ -13,7 +13,7 @@ namespace SeedMachines.Framework.BigCraftables
 {
     public abstract class IBigCraftableWrapper
     {
-        private static Dictionary<String, IBigCraftableWrapper> wrappers = new Dictionary<String, IBigCraftableWrapper>();
+        private static Dictionary<string, IBigCraftableWrapper> wrappers = new Dictionary<string, IBigCraftableWrapper>();
 
         static IBigCraftableWrapper()
         {
@@ -21,27 +21,19 @@ namespace SeedMachines.Framework.BigCraftables
             addWrapper(new SeedBanditWrapper());
         }
 
-        public static void addWrapper(IBigCraftableWrapper wrapper)
+        private static void addWrapper(IBigCraftableWrapper wrapper)
         {
             wrappers.Add(wrapper.name, wrapper);
         }
 
-        public static IBigCraftableWrapper getWrapper(String name)
+        public static IBigCraftableWrapper getWrapper(string name)
         {
             return wrappers[name];
         }
 
-        public static Dictionary<String, IBigCraftableWrapper> getAllWrappers()
+        public static Dictionary<string, IBigCraftableWrapper> getAllWrappers()
         {
             return wrappers;
-        }
-
-        public static void addAllRecipies()
-        {
-            foreach (IBigCraftableWrapper wrapper in wrappers.Values)
-            {
-                wrapper.addReceipt();
-            }
         }
 
         public static void checkAndInjectDynamicObject(OverlaidDictionary objects, Vector2 key)
@@ -61,25 +53,9 @@ namespace SeedMachines.Framework.BigCraftables
             }
         }
 
-        public static void addBigCraftablesInformations(IDictionary<int, string> bigCraftablesInformationData)
-        {
-            foreach (IBigCraftableWrapper wrapper in wrappers.Values)
-            {
-                wrapper.addBigCraftablesInformation(bigCraftablesInformationData);
-            }
-        }
-
-        public static void addCraftingRecipes(IDictionary<string, string> craftingRecipesData)
-        {
-            foreach (IBigCraftableWrapper wrapper in wrappers.Values)
-            {
-                wrapper.addCraftingRecipe(craftingRecipesData);
-            }
-        }
-
         //-----------------
 
-        public int itemID;
+        public string itemID;
         public String name;
         public int price;
         public bool availableOutdoors;
@@ -101,7 +77,7 @@ namespace SeedMachines.Framework.BigCraftables
 
         private String getTranslationBaseName()
         {
-            return this.name.ToLower().Replace(' ', '-');
+            return name.ToLower().Replace(' ', '-');
         }
 
         public String getDefaultLabel()
@@ -122,57 +98,31 @@ namespace SeedMachines.Framework.BigCraftables
             return CustomTranslator.getAllTranslationsByLocales(getTranslationBaseName() + ".description");
         }
 
-        public String getLabel()
-        {
-            return ModEntry.modHelper.Translation.Get(getTranslationBaseName() + ".label");
-        }
-
-        public String getDescription()
-        {
-            return ModEntry.modHelper.Translation.Get(getTranslationBaseName() + ".description");
-        }
-
-        public void addReceipt()
-        {
-            if (!Game1.player.craftingRecipes.Keys.Contains(this.name))
-            {
-                Game1.player.craftingRecipes.Add(this.name, 0);
-            }
-        }
-
-        public void addBigCraftablesInformation(IDictionary<int, string> bigCraftablesInformationData)
-        {
-            bigCraftablesInformationData[itemID] = $"{name}/{price}/{edibility}/{typeAndCategory}/{getDescription()}/{availableOutdoors}/{availableIndoors}/{fragility}/{getLabel()}";
-        }
-
-        public void addCraftingRecipe(IDictionary<string, string> craftingRecipesData)
-        {
-            craftingRecipesData[this.name] = $"{ingredients}/{location}/{itemID}/true/{unlockConditions}/{getLabel()}";
-        }
-
         public JsonAssetsBigCraftableModel getJsonAssetsModel()
         {
             JsonAssetsBigCraftableModel result = new JsonAssetsBigCraftableModel();
-            result.Name = this.name;
-            result.Description = this.getDefaultDescription();
-            result.Price = this.price;
+            result.Name = getDefaultLabel();
+            result.Description = getDefaultDescription();
+            result.Price = price;
             result.IsDefault = true;
             result.ProvidesLight = false;
-            result.ReserveExtraIndexCount = this.maxAnimationIndex;
+            result.ReserveExtraIndexCount = maxAnimationIndex;
 
-            result.Recipe = new JARecipe();
+            result.Recipe = new JsonAssetsBigCraftableRecipe();
+            result.Recipe.IsDefault = true;
             result.Recipe.CanPurchase = false;
             result.Recipe.ResultCount = 1;
-            result.Recipe.Ingredients = new List<IDictionary<String, int>>();
-            string[] splittedIngredients = this.ingredients.Split(' ');
+            result.Recipe.Ingredients = new List<JsonAssetsBigCraftableIngredient>();
+            string[] splittedIngredients = ingredients.Split(' ');
             for (int i = 0; i < splittedIngredients.Length; i+=2)
             {
-                IDictionary<String, int> ingredientMap = new Dictionary<string, int>();
-                ingredientMap.Add("Object", Int32.Parse(splittedIngredients[i]));
-                ingredientMap.Add("Count", Int32.Parse(splittedIngredients[i+1]));
-                result.Recipe.Ingredients.Add(ingredientMap);
+                JsonAssetsBigCraftableIngredient ingredient = new JsonAssetsBigCraftableIngredient();
+                ingredient.Object = splittedIngredients[i];
+                ingredient.Count = Int32.Parse(splittedIngredients[i+1]);
+                result.Recipe.Ingredients.Add(ingredient);
             }
-
+            
+            //result.TranslationKey = getTranslationBaseName();
             result.NameLocalization = getAllTranslationsForLabel();
             result.DescriptionLocalization = getAllTranslationsForDescription();
 

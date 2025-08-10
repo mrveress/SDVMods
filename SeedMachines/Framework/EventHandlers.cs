@@ -21,7 +21,6 @@ namespace SeedMachines.Framework
         }
         public static void OnDayStarted(object sender, DayStartedEventArgs args)
         {
-            IBigCraftableWrapper.addAllRecipies();
             BigCraftablesDynamicInjector.injectDynamicsInCurrentLocation();
         }
 
@@ -41,6 +40,17 @@ namespace SeedMachines.Framework
         public static void OnObjectListChanged(object sender, ObjectListChangedEventArgs args)
         {
             BigCraftablesDynamicInjector.injectDynamicsInCurrentLocation();
+        }
+
+        public static void OnLocaleChanged(object sender, LocaleChangedEventArgs args)
+        {
+            ModEntry.debug($"Locale changed to {args.NewLocale}, invalidate cache for JA-related Big Craftable assets…");
+            ModEntry.modHelper.GameContent.InvalidateCache(
+                asset =>
+                    asset.NameWithoutLocale.IsEquivalentTo("Data/BigCraftables")
+                    //|| asset.NameWithoutLocale.IsEquivalentTo("Strings/BigCraftables")
+                    //|| asset.Name.StartsWith("JA/BigCraftable/")
+            );
         }
 
         public static void OnButtonPressed(object sender, ButtonPressedEventArgs args)

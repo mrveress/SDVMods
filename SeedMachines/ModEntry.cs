@@ -20,7 +20,7 @@ namespace SeedMachines
     {
         internal static IModHelper modHelper;
         internal static IMonitor monitor;
-        internal static DataLoader dataLoader;
+        internal static Framework.DataLoader dataLoader;
         internal static ModSettings settings;
 
         public override void Entry(IModHelper helper)
@@ -39,6 +39,7 @@ namespace SeedMachines
             modHelper.Events.Player.Warped += EventHandlers.OnWarped;
             modHelper.Events.World.ObjectListChanged += EventHandlers.OnObjectListChanged;
             modHelper.Events.Input.ButtonPressed += EventHandlers.OnButtonPressed;
+            modHelper.Events.Content.LocaleChanged += EventHandlers.OnLocaleChanged;
         }
 
         public static void readSettings()
